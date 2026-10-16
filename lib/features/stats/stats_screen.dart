@@ -93,7 +93,7 @@ class _StatsBody extends ConsumerWidget {
                 icon: Icons.bolt_rounded,
                 iconColor: AppColors.flame,
                 value: '$weekWins',
-                label: 'Wins this week',
+                label: 'This week',
               ),
             ),
             const SizedBox(width: 10),

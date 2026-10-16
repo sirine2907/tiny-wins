@@ -57,7 +57,7 @@ class HabitDetailScreen extends ConsumerWidget {
                   icon: Icons.local_fire_department_rounded,
                   iconColor: AppColors.flame,
                   value: '${stats.currentStreak}',
-                  label: 'Current streak',
+                  label: 'Streak',
                 ),
               ),
               const SizedBox(width: 10),
@@ -110,12 +110,12 @@ class HabitDetailScreen extends ConsumerWidget {
     );
   }
 
-  /// Completions per week (Monday to Sunday) for the last eight weeks.
+  /// Completions per week (Monday to Sunday) for the last six weeks.
   static List<(String, int)> _weeklyCounts(Set<int> done, int today) {
     final thisMonday = today - (weekdayOfDayKey(today) - 1);
     final format = DateFormat.MMMd();
     return [
-      for (var w = 7; w >= 0; w--)
+      for (var w = 5; w >= 0; w--)
         (
           w == 0 ? 'This wk' : format.format(dateOfDayKey(thisMonday - 7 * w)),
           [

@@ -116,7 +116,7 @@ void main() {
     await tester.tap(find.text('Meditate'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Current streak'), findsOneWidget);
+    expect(find.text('Streak'), findsOneWidget);
     expect(find.text('4'), findsOneWidget);
     expect(find.text('Best streak'), findsOneWidget);
     expect(find.text('8'), findsOneWidget);

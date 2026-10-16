@@ -30,16 +30,15 @@ abstract final class AppTheme {
       borderRadius: BorderRadius.circular(20),
     );
 
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: scheme,
+    final base = ThemeData(useMaterial3: true, colorScheme: scheme);
+
+    return base.copyWith(
       scaffoldBackgroundColor: scheme.surface,
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.surface,
         scrolledUnderElevation: 0,
         centerTitle: false,
-        titleTextStyle: TextStyle(
-          fontSize: 26,
+        titleTextStyle: base.textTheme.headlineSmall?.copyWith(
           fontWeight: FontWeight.w700,
           color: scheme.onSurface,
         ),
@@ -61,7 +60,14 @@ abstract final class AppTheme {
           borderSide: BorderSide.none,
         ),
       ),
+      // Flat, like the cards, and solid so it stands out without a shadow.
       floatingActionButtonTheme: FloatingActionButtonThemeData(
+        elevation: 0,
+        focusElevation: 0,
+        hoverElevation: 0,
+        highlightElevation: 0,
+        backgroundColor: scheme.primary,
+        foregroundColor: scheme.onPrimary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),
       navigationBarTheme: NavigationBarThemeData(

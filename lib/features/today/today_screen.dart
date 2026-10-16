@@ -6,6 +6,7 @@ import '../../core/day.dart';
 import '../../data/database.dart';
 import '../../data/providers.dart';
 import '../../domain/streaks.dart';
+import '../habits/habit_detail_screen.dart';
 import '../habits/habit_editor_screen.dart';
 import 'widgets/habit_tile.dart';
 
@@ -81,7 +82,7 @@ class _HabitList extends ConsumerWidget {
               padding: const EdgeInsets.only(bottom: 10),
               child: HabitTile(
                 habit: habit,
-                onTap: () => openHabitEditor(context, habit),
+                onTap: () => openHabitDetail(context, habit),
               ),
             ),
         ],
@@ -93,7 +94,7 @@ class _HabitList extends ConsumerWidget {
               child: HabitTile(
                 habit: habit,
                 dayOff: true,
-                onTap: () => openHabitEditor(context, habit),
+                onTap: () => openHabitDetail(context, habit),
               ),
             ),
         ],

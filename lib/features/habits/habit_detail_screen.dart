@@ -8,7 +8,9 @@ import '../../core/habit_icons.dart';
 import '../../core/theme/app_theme.dart';
 import '../../data/database.dart';
 import '../../data/providers.dart';
+import '../../widgets/section_card.dart';
 import '../../widgets/simple_bar_chart.dart';
+import '../../widgets/stat_card.dart';
 import 'habit_editor_screen.dart';
 import 'widgets/habit_heatmap.dart';
 
@@ -50,30 +52,36 @@ class HabitDetailScreen extends ConsumerWidget {
           const SizedBox(height: 20),
           Row(
             children: [
-              _StatCard(
-                icon: Icons.local_fire_department_rounded,
-                iconColor: AppColors.flame,
-                value: '${stats.currentStreak}',
-                label: 'Current streak',
+              Expanded(
+                child: StatCard(
+                  icon: Icons.local_fire_department_rounded,
+                  iconColor: AppColors.flame,
+                  value: '${stats.currentStreak}',
+                  label: 'Current streak',
+                ),
               ),
               const SizedBox(width: 10),
-              _StatCard(
-                icon: Icons.emoji_events_rounded,
-                iconColor: color,
-                value: '${stats.bestStreak}',
-                label: 'Best streak',
+              Expanded(
+                child: StatCard(
+                  icon: Icons.emoji_events_rounded,
+                  iconColor: color,
+                  value: '${stats.bestStreak}',
+                  label: 'Best streak',
+                ),
               ),
               const SizedBox(width: 10),
-              _StatCard(
-                icon: Icons.donut_large_rounded,
-                iconColor: theme.colorScheme.primary,
-                value: '${(stats.completionRate * 100).round()}%',
-                label: '30-day rate',
+              Expanded(
+                child: StatCard(
+                  icon: Icons.donut_large_rounded,
+                  iconColor: theme.colorScheme.primary,
+                  value: '${(stats.completionRate * 100).round()}%',
+                  label: '30-day rate',
+                ),
               ),
             ],
           ),
           const SizedBox(height: 12),
-          _Section(
+          SectionCard(
             title: 'History',
             subtitle: 'Tap a day to fix a missed check-in.',
             child: HabitHeatmap(
@@ -88,7 +96,7 @@ class HabitDetailScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 12),
-          _Section(
+          SectionCard(
             title: 'Weekly wins',
             subtitle: '${stats.totalCompletions} tiny wins so far',
             child: SimpleBarChart(
@@ -199,91 +207,6 @@ class _IconText extends StatelessWidget {
         const SizedBox(width: 4),
         Text(text, style: style),
       ],
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  const _StatCard({
-    required this.icon,
-    required this.iconColor,
-    required this.value,
-    required this.label,
-  });
-
-  final IconData icon;
-  final Color iconColor;
-  final String value;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Expanded(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, color: iconColor),
-              const SizedBox(height: 10),
-              Text(
-                value,
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Section extends StatelessWidget {
-  const _Section({
-    required this.title,
-    required this.subtitle,
-    required this.child,
-  });
-
-  final String title;
-  final String subtitle;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: theme.textTheme.titleMedium),
-            Text(
-              subtitle,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 16),
-            child,
-          ],
-        ),
-      ),
     );
   }
 }

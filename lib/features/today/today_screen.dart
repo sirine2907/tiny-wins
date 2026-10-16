@@ -6,6 +6,7 @@ import '../../core/day.dart';
 import '../../data/database.dart';
 import '../../data/providers.dart';
 import '../../domain/streaks.dart';
+import '../habits/habit_editor_screen.dart';
 import 'widgets/habit_tile.dart';
 
 class TodayScreen extends ConsumerWidget {
@@ -35,10 +36,16 @@ class TodayScreen extends ConsumerWidget {
       ),
       body: habits.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(child: Text('Something went wrong.\n$error')),
+        error: (error, _) =>
+            Center(child: Text('Something went wrong.\n$error')),
         data: (habits) => habits.isEmpty
             ? const _EmptyState()
             : _HabitList(habits: habits, today: today),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => openHabitEditor(context),
+        icon: const Icon(Icons.add),
+        label: const Text('New habit'),
       ),
     );
   }
@@ -72,7 +79,10 @@ class _HabitList extends ConsumerWidget {
           for (final habit in due)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: HabitTile(habit: habit),
+              child: HabitTile(
+                habit: habit,
+                onTap: () => openHabitEditor(context, habit),
+              ),
             ),
         ],
         if (dayOff.isNotEmpty) ...[
@@ -80,7 +90,11 @@ class _HabitList extends ConsumerWidget {
           for (final habit in dayOff)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: HabitTile(habit: habit, dayOff: true),
+              child: HabitTile(
+                habit: habit,
+                dayOff: true,
+                onTap: () => openHabitEditor(context, habit),
+              ),
             ),
         ],
       ],

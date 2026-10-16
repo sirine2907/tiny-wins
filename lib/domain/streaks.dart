@@ -4,6 +4,7 @@ import '../core/day.dart';
 
 const everyDay = 0x7f;
 const weekdaysOnly = 0x1f;
+const weekendsOnly = 0x60;
 
 /// Whether a habit with the [weekdays] bitmask is due on [dayKey].
 bool isScheduledOn(int weekdays, int dayKey) =>

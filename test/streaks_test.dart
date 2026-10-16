@@ -6,7 +6,9 @@ void main() {
   // Friday 16 October 2026.
   final today = dayKeyOf(DateTime(2026, 10, 16));
 
-  Set<int> daysAgo(Iterable<int> offsets) => {for (final o in offsets) today - o};
+  Set<int> daysAgo(Iterable<int> offsets) => {
+    for (final o in offsets) today - o,
+  };
 
   HabitStats stats(
     Set<int> done, {
@@ -65,7 +67,10 @@ void main() {
 
   group('best streak', () {
     test('finds the longest run in history', () {
-      final done = {...daysAgo([0, 1]), ...daysAgo([10, 11, 12, 13, 14])};
+      final done = {
+        ...daysAgo([0, 1]),
+        ...daysAgo([10, 11, 12, 13, 14]),
+      };
       final result = stats(done);
       expect(result.currentStreak, 2);
       expect(result.bestStreak, 5);

@@ -36,9 +36,9 @@ class DriftHabitRepository implements HabitRepository {
   final AppDatabase _db;
 
   @override
-  Stream<List<Habit>> watchHabits() =>
-      (_db.select(_db.habits)..orderBy([(h) => OrderingTerm.asc(h.id)]))
-          .watch();
+  Stream<List<Habit>> watchHabits() => (_db.select(
+    _db.habits,
+  )..orderBy([(h) => OrderingTerm.asc(h.id)])).watch();
 
   @override
   Stream<List<Completion>> watchCompletions() =>
@@ -48,9 +48,7 @@ class DriftHabitRepository implements HabitRepository {
   Future<Habit> addHabit(HabitDraft draft, {required int startDay}) {
     return _db
         .into(_db.habits)
-        .insertReturning(
-          _companion(draft).copyWith(startDay: Value(startDay)),
-        );
+        .insertReturning(_companion(draft).copyWith(startDay: Value(startDay)));
   }
 
   @override

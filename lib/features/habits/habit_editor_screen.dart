@@ -8,6 +8,7 @@ import '../../data/database.dart';
 import '../../data/habit_repository.dart';
 import '../../data/providers.dart';
 import '../../domain/streaks.dart';
+import '../../notifications/reminder_service.dart';
 
 /// Creates a habit, or edits [habit] when one is given.
 class HabitEditorScreen extends ConsumerStatefulWidget {
@@ -49,11 +50,23 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
       reminderMinutes: _reminder,
     );
     final repository = ref.read(habitRepositoryProvider);
-    if (_isNew) {
-      await repository.addHabit(draft, startDay: ref.read(todayProvider));
-    } else {
-      await repository.updateHabit(widget.habit!.id, draft);
+    final reminders = ref.read(reminderServiceProvider);
+    final messenger = ScaffoldMessenger.of(context);
+
+    final habit = _isNew
+        ? await repository.addHabit(draft, startDay: ref.read(todayProvider))
+        : await repository.updateHabit(widget.habit!.id, draft);
+
+    if (habit.reminderMinutes != null && !await reminders.requestPermission()) {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Allow notifications in system settings to get reminders.',
+          ),
+        ),
+      );
     }
+    await reminders.schedule(habit);
 
     if (mounted) Navigator.of(context).pop();
   }
@@ -84,6 +97,7 @@ class _HabitEditorScreenState extends ConsumerState<HabitEditorScreen> {
     );
     if (confirmed != true) return;
 
+    await ref.read(reminderServiceProvider).cancel(widget.habit!.id);
     await ref.read(habitRepositoryProvider).deleteHabit(widget.habit!.id);
     if (mounted) Navigator.of(context).popUntil((route) => route.isFirst);
   }
